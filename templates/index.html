@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compression Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Compression Tool</h1>
+            <p>Upload, compress, and compare your images</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-box">
+                    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                    <div class="upload-area" id="uploadArea">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p id="uploadText">Drag and drop your image here or click to select</p>
+                        <span class="upload-hint">Supported formats: JPG, PNG</span>
+                    </div>
+                </div>
+
+                <!-- Quality Slider -->
+                <div class="quality-control">
+                    <label for="qualitySlider">Compression Quality: <span id="qualityValue">80</span>%</label>
+                    <input type="range" id="qualitySlider" min="10" max="95" value="80">
+                    <div class="quality-labels">
+                        <span>Low (More compression)</span>
+                        <span>High (Best quality)</span>
+                    </div>
+                </div>
+
+                <button id="compressBtn" class="compress-btn" disabled>Compress Image</button>
+            </section>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner" style="display:none;"></div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display:none;"></div>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section" style="display:none;">
+                <div class="comparison-container">
+                    <!-- Original Image -->
+                    <div class="image-box">
+                        <h3>Original Image</h3>
+                        <img id="originalImage" src="" alt="Original">
+                        <div class="image-info">
+                            <p><strong>Filename:</strong> <span id="origFilename"></span></p>
+                            <p><strong>Size:</strong> <span id="origSize"></span> KB</p>
+                            <p><strong>Resolution:</strong> <span id="origResolution"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Compressed Image -->
+                    <div class="image-box">
+                        <h3>Compressed Image</h3>
+                        <img id="compressedImage" src="" alt="Compressed">
+                        <div class="image-info">
+                            <p><strong>Quality:</strong> <span id="compQuality"></span>%</p>
+                            <p><strong>Size:</strong> <span id="compSize"></span> KB</p>
+                            <p><strong>Savings:</strong> <span id="spaceSaved" class="savings"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="statistics">
+                    <h3>Compression Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Compression Ratio</div>
+                            <div class="stat-value"><span id="statRatio"></span>%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Space Saved</div>
+                            <div class="stat-value"><span id="statSaved"></span> KB</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Mean Squared Error</div>
+                            <div class="stat-value"><span id="statMSE"></span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">PSNR (dB)</div>
+                            <div class="stat-value"><span id="statPSNR"></span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">SSIM Index</div>
+                            <div class="stat-value"><span id="statSSIM"></span></div>
+                        </div>
+                        <div class="stat-card quality-indicator">
+                            <div class="stat-label">Quality Assessment</div>
+                            <div class="stat-value" id="qualityAssessment">Excellent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality Information -->
+                <div class="quality-info">
+                    <h4>Quality Assessment Guide</h4>
+                    <ul>
+                        <li><strong>MSE (Mean Squared Error):</strong> Lower is better. Measures pixel difference between images.</li>
+                        <li><strong>PSNR (Peak Signal-to-Noise Ratio):</strong> Higher is better. Measured in dB. >40dB is typically excellent.</li>
+                        <li><strong>SSIM (Structural Similarity):</strong> Ranges 0-1, with 1 being identical. Measures perceived quality.</li>
+                    </ul>
+                </div>
+
+                <!-- Download Button -->
+                <div class="actions">
+                    <button id="downloadBtn" class="download-btn">⬇️ Download Compressed Image</button>
+                    <button id="resetBtn" class="reset-btn">↻ Compress Another Image</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Image Compression Tool | Supports JPEG, PNG, BMP, GIF formats</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
