@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Transfer Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page">
+        <section class="card">
+            <h1>Audio Transfer Tool</h1>
+
+            <form id="audioForm" class="form">
+                <label for="sourceAudioInput" class="file-label">Source Audio</label>
+                <input id="sourceAudioInput" name="source_audio" type="file" accept="audio/*" required>
+
+                <div class="port-grid">
+                    <div>
+                        <label for="senderPortInput" class="file-label">Sender Base Port</label>
+                        <input id="senderPortInput" name="sender_port" type="number" min="1024" max="65000" value="6100" required>
+                    </div>
+                    <div>
+                        <label for="receiverPortInput" class="file-label">Receiver Base Port</label>
+                        <input id="receiverPortInput" name="receiver_port" type="number" min="1024" max="65000" value="6200" required>
+                    </div>
+                </div>
+
+                <button id="checkBtn" type="submit">Run Transfer Test</button>
+            </form>
+
+            <div id="errorBox" class="error hidden"></div>
+
+            <section id="resultBox" class="result hidden" aria-live="polite">
+                <h2>Transfer Summary</h2>
+                <p><strong>Source File:</strong> <span id="resSourceFilename"></span></p>
+                <p><strong>Source Size:</strong> <span id="resSourceSize"></span> MB</p>
+                <p><strong>Max Safe Transfer Size:</strong> <span id="resMaxSafe"></span> MB</p>
+                <p><strong>Transfer Class:</strong> <span id="resClass"></span></p>
+                <p><strong>Recommended Packet Size:</strong> <span id="resPacket"></span></p>
+                <p><strong>Status:</strong> <span id="resStatus"></span></p>
+
+                <div class="meter-wrap">
+                    <div class="meter-bg">
+                        <div id="meterFill" class="meter-fill"></div>
+                    </div>
+                    <p class="meter-label">Verified safe size meter: <span id="resPercent"></span>% of 100MB upload window</p>
+                </div>
+
+                <p class="hash"><strong>Source SHA-256:</strong> <span id="resSourceHash"></span></p>
+            </section>
+
+            <section id="tableBox" class="result hidden" aria-live="polite">
+                <h2>Packet Size Comparison</h2>
+                <div class="table-scroll">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Packet (Bytes)</th>
+                                <th>Sender Port</th>
+                                <th>Receiver Port</th>
+                                <th>Similarity %</th>
+                                <th>Exact Match</th>
+                                <th>Quality</th>
+                                <th>Safe?</th>
+                                <th>Time (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
